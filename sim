@@ -6,7 +6,8 @@ usage() {
   echo "Usage: $0 <command>"
   echo 
   echo "Available commands:"
-  echo "  start     Start SLURM batch job"
+  echo "  start     Start batch job"
+  echo "  cancel    Cancel running batch job"
   echo "  reset     Clear logs"
   echo "  clean     Clear cache"
   echo "  status    Print current job status"
@@ -30,11 +31,14 @@ case "$1" in
        --time=$TIME \
        --output=$SIMULATION_LOG_PATH/%j.log \
        --error=$SIMULATION_LOG_PATH/%j.err \
-       --array=1-10 \
+       --array=$ARRAY \
        "$SCRIPT_DIR/batch.sh")
 
     job_id=$(echo "$job_output" | awk '{print $4}')
     echo "SLURM job $job_id submitted."
+    ;;
+  cancel)
+    scancel -n $JOB_NAME
     ;;
   reset)
     if [[ ! -d "$SIMULATION_LOG_PATH" ]]; then
