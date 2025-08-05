@@ -24,3 +24,27 @@ Available commands:
   setup     Create cache and log directories
   help      Show this help message
 ```
+
+## Git Subtree
+
+Setup:
+```
+git remote add template git@github.com:herbps10/simulation_study_template.git
+git fetch template
+```
+
+Add subdirectory:
+```
+git subtree add --prefix=simulation_study_1 template main --squash
+```
+
+Pulling updates:
+```
+git fetch template
+git subtree pull --prefix=simulation_study_1 template main --squash
+```
+
+Pushing updates:
+```
+git subtree push --prefix=template template main
+```
