@@ -4,9 +4,12 @@
 
 library(tidyverse)
 
-source(glue::glue("{here::here()}/simulate.R"))
-source(glue::glue("{here::here()}/wrapper.R"))
-source(glue::glue("{here::here()}/env.R"))
+root <- rprojroot::is_git_root                                                                         
+basepath <- root$find_file("simulation_study_1")  
+
+source(glue::glue("{basepath}/simulate.R"))
+source(glue::glue("{basepath}/wrapper.R"))
+source(glue::glue("{basepath}/env.R"))
 
 cache_path <- Sys.getenv("SIMULATION_CACHE_PATH")
 task_id <- Sys.getenv("SLURM_ARRAY_TASK_ID")

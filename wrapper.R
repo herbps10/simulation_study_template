@@ -1,3 +1,6 @@
+#
+# The wrapper function runs the statistical analysis for each simulated dataset.
+# 
 wrapper <- function(index, N, alpha, data, path) {
   # Check cache
   if(!file.exists(dirname(path))) dir.create(dirname(path), recursive = TRUE)

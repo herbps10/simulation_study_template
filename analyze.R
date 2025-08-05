@@ -1,6 +1,9 @@
 library(tidyverse)
 
-source(glue::glue("{here::here()}/env.R"))
+root <- rprojroot::is_git_root                                                                         
+basepath <- root$find_file("simulation_study_1")  
+
+source(glue::glue("{basepath}/env.R"))
 
 results_path <- Sys.getenv("SIMULATION_RESULTS_PATH")
 if(results_path == "") stop("Please set SIMULATION_RESULTS_PATH environment variable.")
