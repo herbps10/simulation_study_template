@@ -54,6 +54,7 @@ Available commands:
   clean     Clear cache
   status    Print current job status
   watch     Watch current job status
+  repl      Start interactive job
   logs      Print all logs
   cache     List existing cache files
   setup     Create cache and log directories
