@@ -12,6 +12,7 @@ usage() {
   echo "  clean     Clear cache"
   echo "  status    Print current job status"
   echo "  watch     Watch current job status"
+  echo "  repl      Start interactive job"
   echo "  logs      Print all logs"
   echo "  cache     List existing cache files"
   echo "  setup     Create cache and log directories"
@@ -91,6 +92,10 @@ case "$1" in
 
   watch)
     watch -n 1 $SCRIPT_DIR/sim status
+    ;;
+
+  repl)
+    srun -p $PARTITION --ntasks=1 --ntasks-per-node=1 --cpus-per-task=1 --mem-per-cpu=16G -t 00-06:00:00 --pty bash
     ;;
 
   logs)
