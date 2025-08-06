@@ -1,14 +1,49 @@
-# Simulation Study Template
-This repository contains a simple template for a simulation study that can be run on a SLURM parallel computing cluster.
+# Cluster Simulation Study Template
+This repository provides a flexible template for running simulation studies on a SLURM-based parallel computing cluster.
 
-- `simstudy.R`: generates the simulation datasets and runs the statistical analysis on each one.
-- `wrapper.R`: implements the statistical analysis for each dataset.
-- `collect.R`: gathers the cached results from all the workers and combines them into one main results file.
-- `analyze.R`: loads the main results file, summarizes the results, and generates any tables and figures.
+The workflow proceeds in several stages:
 
-Configuration is done by setting environment variables in the `env.sh` file.
+## Launch Jobs
+You start the simulation study by running:
+```
+./sim start
+```
+This command submits an array job to SLURM, where each task in the array corresponds to a different run of the simulation. 
 
-The `sim` shell script gathers several common tasks into one place. 
+## 2. Simulation Script: `simstudy.R`
+
+Each SLURM tasks begins by running `simstudy.R`. This script:
+- Reads the job array index from the environment variable `SLURM_ARRAY_TASK_ID`.
+- Uses the job array index to calculate a unique random seed, ensuring that each task simulates a different dataset.
+- Simulates one or more datasets and, for each dataset, calls the `wrapper` function defined in `wrapper.R` to run the statistical analyses.
+
+## 3. Analysis Function: `wrapper.R`
+
+The `wrapper` function defines how each dataset is analyzed. It performs the following steps:
+
+- *Cache Check*: before running the analysis, it checks whether a cached result file already exists for the current simulated datsaet. If it does, the function exits.
+- *Run Analysis*: If no cached result is found, the function runs the statistical analysis (e.g. computing point estimates, uncertainty intervals, etc.).
+- *Save Result*: The results are saved to the cache for later use. 
+
+## 4. Result Collection: `collect_results.R`
+After all array jobs complete, run:
+```
+Rscript collect_results.R
+```
+This script aggregates the cached results from all tasks into a single combined results file.
+
+## 5. Summary Analysis: `analyze.R`
+Finally, run:
+```
+Rscript analyze.R
+```
+This script loads the combined results and computes summary metrics (e.g., average error, empirical coverage). Customize this script to produce tables or plots for reporting.
+
+## Configuration
+All configuration for your simulation study is handled through environment variables defined in the `env.sh` file. This script is sourced by the job submission process and sets paths, job parameters, and SLURM options.
+
+## `sim` command 
+The `sim` shell script gathers several common tasks into one place.
 ```
 Usage: ./sim <command>
 
@@ -26,6 +61,7 @@ Available commands:
 ```
 
 ## Git Subtree
+A convenient way to copy this template into another repository is via `git subtree`.
 
 Setup:
 ```
