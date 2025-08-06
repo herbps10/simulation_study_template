@@ -3,21 +3,21 @@ This repository provides a flexible template for running simulation studies on a
 
 The workflow proceeds in several stages:
 
-## Launch Jobs
+### 1. Launch Jobs
 You start the simulation study by running:
 ```
 ./sim start
 ```
 This command submits an array job to SLURM, where each task in the array corresponds to a different run of the simulation. 
 
-## 2. Simulation Script: `simstudy.R`
+### 2. Simulation Script: `simstudy.R`
 
 Each SLURM tasks begins by running `simstudy.R`. This script:
 - Reads the job array index from the environment variable `SLURM_ARRAY_TASK_ID`.
 - Uses the job array index to calculate a unique random seed, ensuring that each task simulates a different dataset.
 - Simulates one or more datasets and, for each dataset, calls the `wrapper` function defined in `wrapper.R` to run the statistical analyses.
 
-## 3. Analysis Function: `wrapper.R`
+### 3. Analysis Function: `wrapper.R`
 
 The `wrapper` function defines how each dataset is analyzed. It performs the following steps:
 
@@ -25,14 +25,14 @@ The `wrapper` function defines how each dataset is analyzed. It performs the fol
 - *Run Analysis*: If no cached result is found, the function runs the statistical analysis (e.g. computing point estimates, uncertainty intervals, etc.).
 - *Save Result*: The results are saved to the cache for later use. 
 
-## 4. Result Collection: `collect_results.R`
+### 4. Result Collection: `collect_results.R`
 After all array jobs complete, run:
 ```
 Rscript collect_results.R
 ```
 This script aggregates the cached results from all tasks into a single combined results file.
 
-## 5. Summary Analysis: `analyze.R`
+### 5. Summary Analysis: `analyze.R`
 Finally, run:
 ```
 Rscript analyze.R
