@@ -1,6 +1,8 @@
 # Cluster Simulation Study Template
 This repository provides a flexible template for running simulation studies on a SLURM-based parallel computing cluster.
 
+A nice description of this style of simulation study setup is in [_Tidy simulation: Designing robust, reproducible, and scalable Monte Carlo simulations_](https://arxiv.org/pdf/2509.11741) (Erik-Jan van Kesteren 2025). 
+
 The workflow proceeds in several stages:
 
 ### 1. Launch Jobs
